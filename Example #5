@@ -1,0 +1,61 @@
+#!/bin/bash
+
+# Function to generate multiplication table
+generate_multiplication_table() {
+    start_table=$1
+    end_table=$2
+    start_multiply=$3
+    end_multiply=$4
+
+    echo "Here is the multiplication table for $start_table to $end_table in the range of $start_multiply to $end_multiply"
+
+    # Print header row
+    echo -n "X "
+    for ((i = start_multiply; i <= end_multiply; i++)); do
+        echo -n "$i "
+    done
+    echo
+
+    # Print multiplication table
+    for ((i = start_table; i <= end_table; i++)); do
+        echo -n "$i "
+        for ((j = start_multiply; j <= end_multiply; j++)); do
+            echo -n "$((i * j)) "
+        done
+        echo
+    done
+}
+
+# Main program loop
+while true; do
+    # Ask user for input
+    echo -n "Enter the starting range for Multiplication Table: "
+    read start_table
+
+    echo -n "Enter the ending range for Multiplication Table: "
+    read end_table
+
+    echo -n "Enter the starting range for multiplying the numbers in Multiplication Table: "
+    read start_multiply
+
+    echo -n "Enter the ending range for multiplying the numbers in Multiplication Table: "
+    read end_multiply
+
+    # Validate inputs
+    if ! [[ $start_table =~ ^[0-9]+$ ]] || ! [[ $end_table =~ ^[0-9]+$ ]] || ! [[ $start_multiply =~ ^[0-9]+$ ]] || ! [[ $end_multiply =~ ^[0-9]+$ ]]; then
+        echo "Invalid input. Please enter positive integers."
+        continue
+    fi
+
+    # Generate multiplication table
+    generate_multiplication_table $start_table $end_table $start_multiply $end_multiply
+
+    # Ask user if they want to create another table
+    echo -n "Do you want to create another multiplication table? (yes/no): "
+    read choice
+
+    if [[ $choice != "yes" ]]; then
+        echo "Thank you for using the multiplication table generator!"
+        break
+    fi
+done
