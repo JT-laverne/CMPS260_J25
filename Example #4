@@ -1,0 +1,50 @@
+#!/bin/bash
+
+# Ask user for input
+echo -n "Please enter your name: "
+read name
+
+echo -n "Please enter your age: "
+read age
+
+echo -n "Please enter your Gender (male/female): "
+read gender
+
+echo -n "Please enter your height in feet: "
+read height_feet
+
+echo -n "Please enter your height in inches: "
+read height_inches
+
+echo -n "Please enter your weight in pounds: "
+read weight
+
+# Validate numeric inputs
+if ! [[ $age =~ ^[0-9]+$ ]] || ! [[ $height_feet =~ ^[0-9]+$ ]] || ! [[ $height_inches =~ ^[0-9]+$ ]] || ! [[ $weight =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "Invalid input. Please enter numeric values for age, height, and weight."
+    exit 1
+fi
+
+# Convert height to inches
+height_inches_total=$(echo "scale=2; ($height_feet * 12) + $height_inches" | bc)
+
+# Calculate BMI
+bmi=$(echo "scale=2; 703 * $weight / ($height_inches_total * $height_inches_total)" | bc)
+
+# Determine BMI status
+if (( $(echo "$bmi < 18.5" | bc -l) )); then
+    bmi_status="Underweight"
+elif (( $(echo "$bmi >= 18.5 && $bmi < 24.9" | bc -l) )); then
+    bmi_status="Normal"
+elif (( $(echo "$bmi >= 25 && $bmi < 29.9" | bc -l) )); then
+    bmi_status="Overweight"
+else
+    bmi_status="Obese"
+fi
+
+# Output results
+echo ""
+echo "Hi $name,"
+echo "You are a $gender. You are $age years old. You are currently $height_feet'$height_inches\" and you currently weigh $weight pounds."
+echo "Your BMI is $bmi, which is $bmi_status."
+echo "Thank you for using the BMI Calculator!"
