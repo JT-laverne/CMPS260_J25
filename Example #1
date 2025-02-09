@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Display the header
+echo "--------------------------------------Welcome to Gas 4 Taxes--------------------------------------"
+echo "| Gas Type  | Price |"
+echo "-------------------------------------------------------------------------------------------------"
+echo "| Regular   | \$5.02 |"
+echo "-------------------------------------------------------------------------------------------------"
+echo "| Midgrade  | \$5.22 |"
+echo "-------------------------------------------------------------------------------------------------"
+echo "| Premium   | \$5.42 |"
+echo "-------------------------------------------------------------------------------------------------"
+echo "| Diesel    | \$6.03 |"
+echo "-------------------------------------------------------------------------------------------------"
+
+# Ask the user for gas type
+echo -n "Choose a gas type to fill up your car (Regular, Midgrade, Premium, Diesel): "
+read gas_type
+
+# Validate gas type
+case $gas_type in
+    Regular)
+        price=5.02
+        ;;
+    Midgrade)
+        price=5.22
+        ;;
+    Premium)
+        price=5.42
+        ;;
+    Diesel)
+        price=6.03
+        ;;
+    *)
+        echo "Invalid gas type selected. Exiting..."
+        exit 1
+        ;;
+esac
+
+# Ask the user for the number of gallons
+echo -n "How many gallons: "
+read gallons
+
+# Validate gallons input
+if ! [[ $gallons =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "Invalid input for gallons. Please enter a valid number."
+    exit 1
+fi
+
+# Calculate the total cost before tax
+total=$(echo "$price * $gallons" | bc)
+
+# Calculate sales tax (assuming 7% tax rate)
+tax_rate=0.07
+tax=$(echo "$total * $tax_rate" | bc)
+
+# Calculate the final total
+final_total=$(echo "$total + $tax" | bc)
+
+# Display the total
+echo "Your total is \$$(printf "%.2f" $final_total)"
+
+# Ask for payment method
+echo -n "How would you like to pay for it? (Debit Card, Credit Card, Gift Card, or Cash): "
+read payment_method
+
+# Validate payment method
+case $payment_method in
+    Debit\ Card|Credit\ Card|Gift\ Card|Cash)
+        echo "Great! You have paid the balance of \$$(printf "%.2f" $final_total) using your $payment_method."
+        ;;
+    *)
+        echo "Invalid payment method selected. Exiting..."
+        exit 1
+        ;;
+esac
+
+# Thank the user
+echo "Thank you for filling up gas at Gas 4 Taxes, a place to get broke!"
