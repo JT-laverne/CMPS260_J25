@@ -1,0 +1,102 @@
+#!/bin/bash
+
+# Define meal and dessert prices
+BURGER_PRICE=15.00
+SALAD_PRICE=12.00
+PASTA_PRICE=14.00
+STEAK_PRICE=25.00
+
+PIE_PRICE=5.00
+CAKE_PRICE=6.00
+ICE_CREAM_PRICE=4.00
+FRUIT_SALAD_PRICE=3.50
+
+SALES_TAX=0.08  # 8% sales tax
+
+# Display header
+echo "*********Welcome to Discovery Bay Golf and Country Club Restaurant********"
+echo "| Meal               | Price  |"
+echo "*******************************************************************"
+echo "1. Discovery Bay Burger (B)  \$$BURGER_PRICE"
+echo "2. Salad (S)                 \$$SALAD_PRICE"
+echo "3. Pasta (P)                 \$$PASTA_PRICE"
+echo "4. Steak (T)                 \$$STEAK_PRICE"
+echo ""
+echo "| Desert             | Price  |"
+echo "*******************************************************************"
+echo "1. Pie (P)                   \$$PIE_PRICE"
+echo "2. Cake (C)                  \$$CAKE_PRICE"
+echo "3. Ice Cream (I)             \$$ICE_CREAM_PRICE"
+echo "4. Fruit Salad (F)           \$$FRUIT_SALAD_PRICE"
+echo ""
+
+# Ask user for meal choice
+echo -n "Enter a Meal that you would like to order (B, S, P, T): "
+read meal_choice
+
+# Validate meal choice and set meal price
+case $meal_choice in
+    B|b)
+        meal_price=$BURGER_PRICE
+        meal_name="Discovery Bay Burger"
+        ;;
+    S|s)
+        meal_price=$SALAD_PRICE
+        meal_name="Salad"
+        ;;
+    P|p)
+        meal_price=$PASTA_PRICE
+        meal_name="Pasta"
+        ;;
+    T|t)
+        meal_price=$STEAK_PRICE
+        meal_name="Steak"
+        ;;
+    *)
+        echo "Invalid meal choice. Exiting."
+        exit 1
+        ;;
+esac
+
+# Ask user for dessert choice
+echo -n "Enter a Dessert that you would like to order (P, C, I, F): "
+read dessert_choice
+
+# Validate dessert choice and set dessert price
+case $dessert_choice in
+    P|p)
+        dessert_price=$PIE_PRICE
+        dessert_name="Pie"
+        ;;
+    C|c)
+        dessert_price=$CAKE_PRICE
+        dessert_name="Cake"
+        ;;
+    I|i)
+        dessert_price=$ICE_CREAM_PRICE
+        dessert_name="Ice Cream"
+        ;;
+    F|f)
+        dessert_price=$FRUIT_SALAD_PRICE
+        dessert_name="Fruit Salad"
+        ;;
+    *)
+        echo "Invalid dessert choice. Exiting."
+        exit 1
+        ;;
+esac
+
+# Calculate subtotal
+subtotal=$(echo "$meal_price + $dessert_price" | bc)
+
+# Calculate sales tax
+tax=$(echo "$subtotal * $SALES_TAX" | bc)
+
+# Calculate total
+total=$(echo "$subtotal + $tax" | bc)
+
+# Display results
+echo ""
+echo "Sales Tax: \$$(printf "%.2f" $tax)"
+echo "Your total is \$$(printf "%.2f" $total) and this will go to member charge!"
+echo "Thank you for dining with us at Discovery Bay Golf and Country Club! You made Matt Padilla happy ☺"
